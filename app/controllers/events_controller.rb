@@ -1,7 +1,8 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!, except: [:index, :show]
   def index
-    @events = Event.all
+    @upcoming_events = Event.upcoming
+    @past_events = Event.past
   end
 
   def show
@@ -20,6 +21,12 @@ class EventsController < ApplicationController
     else
       render :new, status: :unprocessable_entity
     end
+  end
+
+  def attend
+    @event = Event.find(params[:id])
+    current_user.attended_events << @event
+    redirect_to @event, notice: "You're attending this event!"
   end
 
   private

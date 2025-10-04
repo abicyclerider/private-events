@@ -3,4 +3,13 @@
 <p><%= @event.location %></p>
 <p><%= @event.description %></p>
 <p><%= @event.creator.email %></p>
+  <% if user_signed_in? && !current_user.attended_events.include?(@event) %>
+    <%= button_to "Attend Event", attend_event_path(@event) %>
+  <% end %>
+<h3>Attendees:</h3>
+  <ul>
+    <% @event.attendees.each do |attendee| %>
+      <li><%= attendee.email %></li>
+    <% end %>
+  </ul>
 <p><%= link_to "Events", events_path %></p>
